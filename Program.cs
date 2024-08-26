@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
@@ -36,7 +40,6 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    // Console.WriteLine('a');
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
@@ -50,29 +53,7 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/locate", async () =>
-{
-    Console.WriteLine("TESTING");
-
-    using (var client = new HttpClient())
-    {
-        client.DefaultRequestHeaders.Add("User-Agent", "YourAppName/1.0 (your.email@example.com)");
-
-        // Faz a requisição
-        var response = await client.GetAsync("https://nominatim.openstreetmap.org/search?q=jacarepagua&format=json");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content.GetType());
-            Console.WriteLine(content);
-        }
-        else
-        {
-            Console.WriteLine($"Erro: {response.StatusCode}");
-        }
-    }
-});
+app.MapControllers();
 
 app.Run();
 

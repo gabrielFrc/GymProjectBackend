@@ -31,3 +31,4 @@ C:\Users\gabri\Documents\GitHub\GymProjectBackend\obj\Debug\net8.0\refint\GymPro
 C:\Users\gabri\Documents\GitHub\GymProjectBackend\obj\Debug\net8.0\GymProjectBackend.pdb
 C:\Users\gabri\Documents\GitHub\GymProjectBackend\obj\Debug\net8.0\GymProjectBackend.genruntimeconfig.cache
 C:\Users\gabri\Documents\GitHub\GymProjectBackend\obj\Debug\net8.0\ref\GymProjectBackend.dll
+C:\Users\gabri\Documents\GitHub\GymProjectBackend\obj\Debug\net8.0\GymProjectBackend.sourcelink.json
