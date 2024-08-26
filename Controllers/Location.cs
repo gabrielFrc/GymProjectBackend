@@ -8,12 +8,6 @@ namespace GymProjectBackend.Controllers
     [Route("locate")]
     public class LocationController : ControllerBase
     {
-        // [HttpGet("{id}")]
-        // public IActionResult Get(string id)
-        // {
-        //     return Ok();
-        // }
-
         private readonly IHttpClientFactory _httpClientFactory;
 
         public LocationController(IHttpClientFactory httpClientFactory)
@@ -21,10 +15,29 @@ namespace GymProjectBackend.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
+        public IActionResult GetAllLocations()
+        {
+            List<Location> storeLocation = new List<Location>();
+
+            for (int i = 0; i < Ls.GetLength(0); i++)
+            {
+                Location myLocal = new Location
+                {
+                    Display_Name = (string)Ls[i, 3],
+                    Name = (string)Ls[i, 2],
+                    Lat = Ls[i, 0]?.ToString() ?? "0.00",
+                    Lon = Ls[i, 1]?.ToString() ?? "0.00",
+                    Distance = 0.00,
+                };
+                storeLocation.Add(myLocal);
+            }
+            return Ok(storeLocation.ToArray());
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLocations(string id)
         {
-            Console.WriteLine("FUNFANDO MANE");
             var locations = await GetLocationsFromNominatim(id);
             if (locations == null)
             {
@@ -37,7 +50,7 @@ namespace GymProjectBackend.Controllers
         private async Task<Location[]?> GetLocationsFromNominatim(string id)
         {
             var url = $"https://nominatim.openstreetmap.org/search?q={id}&format=json";
-            
+
             using (var client = _httpClientFactory.CreateClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "YourAppName/1.0 (your.email@example.com)");
@@ -65,7 +78,7 @@ namespace GymProjectBackend.Controllers
                             (double)Ls[i, 0], (double)Ls[i, 1]);
                         Location myLocal = new Location
                         {
-                            Display_Name = (string)Ls[i, 2],
+                            Display_Name = (string)Ls[i, 3],
                             Name = (string)Ls[i, 2],
                             Lat = Ls[i, 0]?.ToString() ?? "0.00",
                             Lon = Ls[i, 1]?.ToString() ?? "0.00",
@@ -106,9 +119,9 @@ namespace GymProjectBackend.Controllers
             const double R = 6371; // Radius of the earth in km
             var dLat = ToRadians(lat2 - lat1);
             var dLon = ToRadians(lon2 - lon1);
-            var a = 
+            var a =
                 Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) * 
+                Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) *
                 Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c; // Distance in km
@@ -120,10 +133,10 @@ namespace GymProjectBackend.Controllers
         }
 
         // Defina sua matriz Ls aqui ou recupere-a de outra forma
-        private static readonly object[,] Ls = {
-            {-22.971974, -43.1842997, "Rio de Janeiro"},
-            {-23.5506507, -46.6333824, "São Paulo"},
-            {-18.57712805, -45.18445836790818, "Minas Gerais"},
+        private readonly object[,] Ls = {
+            {-22.971974, -43.1842997, "Rio de Janeiro", "Um lugar apaziguado neste..."},
+            {-23.5506507, -46.6333824, "São Paulo", "Um lugar apaziguado neste..."},
+            {-18.57712805, -45.18445836790818, "Minas Gerais", "Um lugar apaziguado neste..."},
         };
     }
 }
