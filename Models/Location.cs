@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 namespace GymProjectBackend.Models{
     public class Location()
     {
+        public Guid Id { get; init; } = Guid.NewGuid();
         [JsonPropertyName("display_name")]
         public required string Display_Name { get; init; } // Usar PascalCase
 
