@@ -17,6 +17,10 @@ namespace GymProjectBackend.Models{
         public required string Lon { get; set; } // Usar PascalCase
 
         [JsonPropertyName("distance")]
-        public double Distance { get; init; } = 0; // Usar PascalCase
+        public double Distance { get; private set; } = 0; // Usar PascalCase
+
+        public void ChangeDistance(double distance){
+            Distance = distance;
+        }
     }
 }
